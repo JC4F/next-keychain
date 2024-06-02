@@ -18,6 +18,7 @@ export async function POST(request: Request) {
   const data = await request.json();
   await db
     .insertInto("User")
+    //@ts-ignore
     .values({
       email: data.email,
       role: ROLE.USER,

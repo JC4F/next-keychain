@@ -80,6 +80,7 @@ export function MainLayoutV2({
 
   useEffect(() => {
     setData({ user: session?.user });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (pathname === "/404") return <>{children}</>;

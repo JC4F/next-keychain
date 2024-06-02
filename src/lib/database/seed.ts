@@ -5,6 +5,7 @@ export const seedData = async () => {
   try {
     await db
       .insertInto("User")
+      // @ts-ignore
       .values([
         {
           name: "Haaland Le",
@@ -25,6 +26,7 @@ export const seedData = async () => {
 
     await db
       .insertInto("Product")
+      // @ts-ignore
       .values([
         {
           mainImage:
