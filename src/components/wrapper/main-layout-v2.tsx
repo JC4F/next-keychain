@@ -1,9 +1,9 @@
 "use client";
 
 import { ROLE } from "@/constants";
+import { useGlobalStore } from "@/hooks";
 import {
   Bell,
-  CircleUser,
   Home,
   LucideProps,
   Menu,
@@ -14,18 +14,14 @@ import {
   ShoppingCart,
   Users2,
 } from "lucide-react";
+import { Session } from "next-auth/types";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect } from "react";
+import { UserNav } from "../custom";
 import {
   Badge,
   Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
   Input,
   ScrollArea,
   Sheet,
@@ -71,8 +67,21 @@ const topLinks: SidebarLink[] = [
   },
 ];
 
-export function MainLayoutV2({ children }: PropsWithChildren) {
+type MainLayoutV2Props = {
+  session: Session | null;
+};
+
+export function MainLayoutV2({
+  children,
+  session,
+}: PropsWithChildren<MainLayoutV2Props>) {
   const pathname = usePathname();
+  const { data, setData } = useGlobalStore();
+
+  useEffect(() => {
+    setData({ user: session?.user });
+  }, []);
+
   if (pathname === "/404") return <>{children}</>;
 
   return (
@@ -173,22 +182,7 @@ export function MainLayoutV2({ children }: PropsWithChildren) {
               </div>
             </form>
           </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="icon" className="rounded-full">
-                <CircleUser className="h-5 w-5" />
-                <span className="sr-only">Toggle user menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <UserNav />
         </header>
         <ScrollArea className="h-[calc(100vh-60px)] w-[100vw] md:w-[calc(100vw-280px)] rounded-md p-4 lg:gap-6 lg:p-6">
           {children}

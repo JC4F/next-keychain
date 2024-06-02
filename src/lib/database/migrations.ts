@@ -33,6 +33,7 @@ export async function up(db: Kysely<any>): Promise<void> {
     .addColumn("title", "varchar", (col) => col.notNull())
     .addColumn("description", "varchar", (col) => col.notNull())
     .addColumn("price", "numeric(8, 2)")
+    .addColumn("quantity", "integer")
     .addColumn("created_at", "timestamp", (col) =>
       col.defaultTo(sql`now()`).notNull()
     )

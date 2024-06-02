@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Button,
   Card,
@@ -17,13 +19,24 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components";
-import { productFakes } from "@/constants/fake-data";
+import { ROLE } from "@/constants";
+import { useGlobalStore } from "@/hooks";
+import { ProductTable } from "@/lib/database/types";
 import { File, ListFilter, PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { Key } from "react";
 import { ProductCard } from "./product-card";
 
-export const ListProduct = () => {
+type ListProductProps = {
+  products: ProductTable[] | null;
+};
+
+export const ListProduct = ({ products }: ListProductProps) => {
+  const {
+    data: { user },
+    setData,
+  } = useGlobalStore();
+
   return (
     <main className="flex flex-1 flex-col gap-4">
       <Tabs defaultValue="all">
@@ -62,14 +75,19 @@ export const ListProduct = () => {
                 Export
               </span>
             </Button>
-            <Button size="sm" asChild>
-              <Link href="/product/new" className="flex items-center h-8 gap-1">
-                <PlusCircle className="h-3.5 w-3.5" />
-                <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                  Add Product
-                </span>
-              </Link>
-            </Button>
+            {user && user.role === ROLE.ADMIN && (
+              <Button size="sm" asChild>
+                <Link
+                  href="/product/new"
+                  className="flex items-center h-8 gap-1"
+                >
+                  <PlusCircle className="h-3.5 w-3.5" />
+                  <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                    Add Product
+                  </span>
+                </Link>
+              </Button>
+            )}
           </div>
         </div>
         <TabsContent value="all">
@@ -82,7 +100,7 @@ export const ListProduct = () => {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {productFakes.map((product) => (
+                {products?.map((product) => (
                   <ProductCard
                     key={product.id as unknown as Key}
                     product={product}

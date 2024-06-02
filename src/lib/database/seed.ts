@@ -36,6 +36,7 @@ export const seedData = async () => {
           title: "Moc 1",
           description: "Description",
           price: 12.04,
+          quantity: 10,
           created_at: new Date(),
         },
         {
@@ -48,6 +49,7 @@ export const seedData = async () => {
           title: "Moc 2",
           description: "Description",
           price: 14.04,
+          quantity: 20,
           created_at: new Date(),
         },
       ])

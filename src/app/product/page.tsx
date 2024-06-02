@@ -1,5 +1,8 @@
+import { fetchProduct } from "@/actions";
 import { ListProduct } from "./_components/list-product";
 
-export default function Dashboard() {
-  return <ListProduct />;
+export default async function Page() {
+  const products = await fetchProduct();
+
+  return <ListProduct products={products.data} />;
 }

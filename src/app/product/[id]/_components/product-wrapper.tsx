@@ -20,7 +20,9 @@ import {
 import { ProductTable } from "@/lib/database/types";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { ImageWrapper } from "./image-wrapper";
 
 type ProductWrapperProps = {
@@ -34,6 +36,7 @@ export const ProductWrapper = ({ product }: ProductWrapperProps) => {
   const [images, setImages] = useState<string[]>([]);
   const [price, setPrice] = useState(0);
   const [quantity, setQuantity] = useState(0);
+  const router = useRouter();
 
   const handleSubmit = async () => {
     const data = {
@@ -42,10 +45,18 @@ export const ProductWrapper = ({ product }: ProductWrapperProps) => {
       mainImage: images[0],
       images,
       price,
+      quantity,
       created_at: new Date(),
     };
     const result = await createProduct(data);
-    console.log(result);
+
+    if (result.isSuccess) {
+      toast.success(result.message);
+
+      router.push("/product");
+    } else {
+      toast.error(result.message);
+    }
   };
 
   return (
@@ -112,7 +123,6 @@ export const ProductWrapper = ({ product }: ProductWrapperProps) => {
                         id="price"
                         type="number"
                         className="w-full"
-                        defaultValue="0"
                         value={price}
                         onChange={(e) => setPrice(+e.target.value)}
                       />
@@ -123,7 +133,6 @@ export const ProductWrapper = ({ product }: ProductWrapperProps) => {
                         id="quantity"
                         type="number"
                         className="w-full"
-                        defaultValue="0"
                         value={quantity}
                         onChange={(e) => setQuantity(+e.target.value)}
                       />

@@ -10,7 +10,7 @@ export interface Database {
 }
 
 export interface UserTable {
-  id: GeneratedAlways<string>;
+  id: GeneratedAlways<string> | string;
   name: string | null;
   email: string;
   emailVerified: Date | null;
@@ -20,19 +20,20 @@ export interface UserTable {
 }
 
 export interface ProductTable {
-  id: GeneratedAlways<string>;
+  id: GeneratedAlways<string> | string;
   mainImage: string;
   images: string[];
   title: string;
   description: string;
   price: number;
+  quantity: number;
   created_at: Date;
   updated_at?: Date;
   deleted_at?: Date;
 }
 
 export interface AccountTable {
-  id: GeneratedAlways<string>;
+  id: GeneratedAlways<string> | string;
   userId: string;
   type: string;
   provider: string;
@@ -47,7 +48,7 @@ export interface AccountTable {
 }
 
 export interface SessionTable {
-  id: GeneratedAlways<string>;
+  id: GeneratedAlways<string> | string;
   userId: string;
   sessionToken: string;
   expires: Date;
