@@ -42,8 +42,8 @@ export default {
             body: JSON.stringify(user),
           });
           const userDbTmp = await userDbTmpRes.json();
-          token.role = userDb.data.role;
-          token.id = userDb.data.id;
+          token.role = userDbTmp.data.role;
+          token.id = userDbTmp.data.id;
         }
       }
 

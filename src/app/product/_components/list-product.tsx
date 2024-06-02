@@ -99,7 +99,7 @@ export const ListProduct = ({ products }: ListProductProps) => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                 {products?.map((product) => (
                   <ProductCard
                     key={product.id as unknown as Key}
