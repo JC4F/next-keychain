@@ -1,4 +1,5 @@
 import { ProductTable } from "@/lib/database/types";
+import { PRODUCT_STATUS } from "../product";
 
 export const productFakes: ProductTable[] = [
   {
@@ -10,6 +11,7 @@ export const productFakes: ProductTable[] = [
     images: [],
     price: 100,
     quantity: 100,
+    status: PRODUCT_STATUS.ACTIVE,
     created_at: new Date(),
   },
   {
@@ -21,6 +23,7 @@ export const productFakes: ProductTable[] = [
     images: [],
     price: 100,
     quantity: 100,
+    status: PRODUCT_STATUS.ACTIVE,
     created_at: new Date(),
   },
 ];
