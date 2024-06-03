@@ -1,5 +1,5 @@
 "use client";
-import { createProduct } from "@/actions";
+import { createProduct, editProduct } from "@/actions";
 import {
   Badge,
   Button,
@@ -48,9 +48,14 @@ export const ProductWrapper = ({ product }: ProductWrapperProps) => {
       images,
       price,
       quantity,
-      created_at: new Date(),
+      status,
     };
-    const result = await createProduct(data);
+    let result;
+    if (product) {
+      result = await editProduct(product?.id as string, data);
+    } else {
+      result = await createProduct(data);
+    }
 
     if (result.isSuccess) {
       toast.success(result.message);
@@ -179,9 +184,9 @@ export const ProductWrapper = ({ product }: ProductWrapperProps) => {
                         <SelectValue placeholder="Select status" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="draft">Draft</SelectItem>
-                        <SelectItem value="published">Active</SelectItem>
-                        <SelectItem value="archived">Archived</SelectItem>
+                        <SelectItem value="Draft">Draft</SelectItem>
+                        <SelectItem value="Active">Active</SelectItem>
+                        <SelectItem value="Archived">Archived</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

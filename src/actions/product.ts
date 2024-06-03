@@ -53,7 +53,7 @@ export async function createProduct(data: any) {
   }
 }
 
-export async function EditProduct(id: string, data: any) {
+export async function editProduct(id: string, data: any) {
   try {
     await db.updateTable("Product").set(data).where("id", "=", id).execute();
 

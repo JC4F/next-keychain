@@ -3,6 +3,7 @@ import { cn } from "@/lib";
 import { ProductTable } from "@/lib/database/types";
 import { Edit, ShoppingCart, Trash } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 type ProductCardProps = {
   product: ProductTable;
@@ -17,6 +18,8 @@ export const ProductCard = ({
   height,
   width,
 }: ProductCardProps) => {
+  const router = useRouter();
+
   return (
     <div>
       <div className="overflow-hidden w-full aspect-square rounded-md relative">
@@ -31,11 +34,14 @@ export const ProductCard = ({
           )}
         />
         <div className="absolute top-1 right-1 flex items-center gap-2">
-          <Button className="w-6 h-6 p-1 bg-destructive">
-            <Edit className="w-4 h-4" />
+          <Button
+            className="w-8 h-8 p-1 bg-destructive"
+            onClick={() => router.push(`/product/${product.id}`)}
+          >
+            <Edit className="w-6 h-6" />
           </Button>
-          <Button className="w-6 h-6 p-1 bg-primary">
-            <Trash className="w-4 h-4" />
+          <Button className="w-8 h-8 p-1 bg-primary">
+            <Trash className="w-6 h-6" />
           </Button>
         </div>
       </div>
