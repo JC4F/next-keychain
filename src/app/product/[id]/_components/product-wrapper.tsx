@@ -17,6 +17,7 @@ import {
   SelectValue,
   Textarea,
 } from "@/components";
+import { PRODUCT_STATUS } from "@/constants";
 import { ProductTable } from "@/lib/database/types";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
@@ -30,12 +31,13 @@ type ProductWrapperProps = {
 };
 
 export const ProductWrapper = ({ product }: ProductWrapperProps) => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [mainImage, setMainImage] = useState("");
-  const [images, setImages] = useState<string[]>([]);
-  const [price, setPrice] = useState(0);
-  const [quantity, setQuantity] = useState(0);
+  const [title, setTitle] = useState(product?.title);
+  const [description, setDescription] = useState(product?.description);
+  const [mainImage, setMainImage] = useState(product?.mainImage || "");
+  const [images, setImages] = useState<string[]>(product?.images || []);
+  const [price, setPrice] = useState(product?.price);
+  const [quantity, setQuantity] = useState(product?.quantity);
+  const [status, setStatus] = useState(product?.status);
   const router = useRouter();
 
   const handleSubmit = async () => {
@@ -167,7 +169,12 @@ export const ProductWrapper = ({ product }: ProductWrapperProps) => {
                 <div className="grid gap-6">
                   <div className="grid gap-3">
                     <Label htmlFor="status">Status</Label>
-                    <Select>
+                    <Select
+                      value={status}
+                      onValueChange={(value) =>
+                        setStatus(value as PRODUCT_STATUS)
+                      }
+                    >
                       <SelectTrigger id="status" aria-label="Select status">
                         <SelectValue placeholder="Select status" />
                       </SelectTrigger>

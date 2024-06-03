@@ -19,15 +19,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { PropsWithChildren, useEffect } from "react";
 import { UserNav } from "../custom";
-import {
-  Badge,
-  Button,
-  Input,
-  ScrollArea,
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-} from "../ui";
+import { Badge, Button, Input, Sheet, SheetContent, SheetTrigger } from "../ui";
 
 type SidebarLink = {
   Icon: React.ForwardRefExoticComponent<
@@ -185,9 +177,9 @@ export function MainLayoutV2({
           </div>
           <UserNav />
         </header>
-        <ScrollArea className="h-[calc(100vh-60px)] w-[100vw] md:w-[calc(100vw-280px)] rounded-md p-4 lg:gap-6 lg:p-6">
+        <div className="h-[calc(100vh-60px)] w-[100vw] md:w-[calc(100vw-280px)] rounded-md p-4 lg:gap-6 lg:p-6 overflow-auto">
           {children}
-        </ScrollArea>
+        </div>
       </div>
     </div>
   );

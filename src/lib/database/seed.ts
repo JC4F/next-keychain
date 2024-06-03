@@ -1,4 +1,4 @@
-import { ROLE } from "../../constants";
+import { PRODUCT_STATUS, ROLE } from "../../constants";
 import db from "./db";
 
 export const seedData = async () => {
@@ -39,6 +39,7 @@ export const seedData = async () => {
           description: "Description",
           price: 12.04,
           quantity: 10,
+          status: PRODUCT_STATUS.ACTIVE,
           created_at: new Date(),
         },
         {
@@ -52,6 +53,7 @@ export const seedData = async () => {
           description: "Description",
           price: 14.04,
           quantity: 20,
+          status: PRODUCT_STATUS.ACTIVE,
           created_at: new Date(),
         },
       ])

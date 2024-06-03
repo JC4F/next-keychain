@@ -1,4 +1,4 @@
-import { ROLE } from "@/constants";
+import { PRODUCT_STATUS, ROLE } from "@/constants";
 import { GeneratedAlways } from "kysely";
 
 export interface Database {
@@ -27,6 +27,7 @@ export interface ProductTable {
   description: string;
   price: number;
   quantity: number;
+  status: PRODUCT_STATUS;
   created_at: Date;
   updated_at?: Date;
   deleted_at?: Date;

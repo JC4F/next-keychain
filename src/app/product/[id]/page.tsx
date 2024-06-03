@@ -1,13 +1,13 @@
+import { fetchProductById } from "@/actions";
 import { redirect } from "next/navigation";
 import { ProductWrapper } from "./_components/product-wrapper";
 
-export default function Page({ params }: { params: { id: string } }) {
+export default async function Page({ params }: { params: { id: string } }) {
   const { id } = params;
-  switch (id) {
-    case "new":
-      return <ProductWrapper />;
+  if (id === "new") return <ProductWrapper />;
 
-    default:
-      redirect("/404");
-  }
+  const product = await fetchProductById(id);
+
+  if (!product.data) return redirect("/404");
+  else return <ProductWrapper product={product.data} />;
 }

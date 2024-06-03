@@ -1,4 +1,5 @@
 import { MainLayoutV2 } from "@/components";
+import { cn } from "@/lib";
 import { auth } from "@/lib/auth/auth";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import type { Metadata } from "next";
@@ -34,7 +35,7 @@ export default async function RootLayout({
          */
         routerConfig={extractRouterConfig(ourFileRouter)}
       />
-      <body className={inter.className}>
+      <body className={cn(inter.className, "overflow-hidden")}>
         <MainLayoutV2 session={session}>{children}</MainLayoutV2>
         <ToastContainer
           position="top-right"

@@ -1,12 +1,20 @@
 import { promises as fs } from "fs";
 import { FileMigrationProvider, Kysely, Migrator, sql } from "kysely";
 import path from "path";
-import { ROLE } from "../../constants";
+import { PRODUCT_STATUS, ROLE } from "../../constants";
 import db from "./db";
 import { seedData } from "./seed";
 
 export async function up(db: Kysely<any>): Promise<void> {
   await db.schema.createType("role").asEnum([ROLE.ADMIN, ROLE.USER]).execute();
+  await db.schema
+    .createType("product_status")
+    .asEnum([
+      PRODUCT_STATUS.ACTIVE,
+      PRODUCT_STATUS.ARCHIVED,
+      PRODUCT_STATUS.DRAFT,
+    ])
+    .execute();
 
   await db.schema
     .createTable("User")
@@ -34,6 +42,7 @@ export async function up(db: Kysely<any>): Promise<void> {
     .addColumn("description", "varchar", (col) => col.notNull())
     .addColumn("price", "numeric(8, 2)")
     .addColumn("quantity", "integer")
+    .addColumn("status", sql`product_status`)
     .addColumn("created_at", "timestamp", (col) =>
       col.defaultTo(sql`now()`).notNull()
     )
