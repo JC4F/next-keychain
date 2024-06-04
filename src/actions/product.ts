@@ -64,7 +64,7 @@ export async function editProduct(id: string, data: any) {
   }
 }
 
-export async function DeleteProduct(id: string) {
+export async function deleteProduct(id: string) {
   try {
     await db.deleteFrom("Product").where("id", "=", id).execute();
 

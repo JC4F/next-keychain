@@ -31,13 +31,14 @@ type ProductWrapperProps = {
 };
 
 export const ProductWrapper = ({ product }: ProductWrapperProps) => {
-  const [title, setTitle] = useState(product?.title);
-  const [description, setDescription] = useState(product?.description);
+  const [title, setTitle] = useState(product?.title || "");
+  const [description, setDescription] = useState(product?.description || "");
   const [mainImage, setMainImage] = useState(product?.mainImage || "");
   const [images, setImages] = useState<string[]>(product?.images || []);
-  const [price, setPrice] = useState(product?.price);
-  const [quantity, setQuantity] = useState(product?.quantity);
+  const [price, setPrice] = useState(product?.price || 0);
+  const [quantity, setQuantity] = useState(product?.quantity || 0);
   const [status, setStatus] = useState(product?.status);
+
   const router = useRouter();
 
   const handleSubmit = async () => {

@@ -1,9 +1,15 @@
+"use client";
+
+import { deleteProduct } from "@/actions";
 import { Button } from "@/components";
+import { ROLE } from "@/constants";
+import { useGlobalStore, useModalLayer2 } from "@/hooks";
 import { cn } from "@/lib";
 import { ProductTable } from "@/lib/database/types";
 import { Edit, ShoppingCart, Trash } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 type ProductCardProps = {
   product: ProductTable;
@@ -19,6 +25,22 @@ export const ProductCard = ({
   width,
 }: ProductCardProps) => {
   const router = useRouter();
+  const { onOpen } = useModalLayer2();
+  const {
+    data: { user },
+  } = useGlobalStore();
+
+  const confirmDelete = async () => {
+    const result = await deleteProduct(product.id as string);
+
+    if (result.isSuccess) {
+      toast.success(result.message);
+
+      router.refresh();
+    } else {
+      toast.error(result.message);
+    }
+  };
 
   return (
     <div>
@@ -34,15 +56,30 @@ export const ProductCard = ({
           )}
         />
         <div className="absolute top-1 right-1 flex items-center gap-2">
-          <Button
-            className="w-8 h-8 p-1 bg-destructive"
-            onClick={() => router.push(`/product/${product.id}`)}
-          >
-            <Edit className="w-6 h-6" />
-          </Button>
-          <Button className="w-8 h-8 p-1 bg-primary">
-            <Trash className="w-6 h-6" />
-          </Button>
+          {user?.role === ROLE.ADMIN && (
+            <>
+              <Button
+                className="w-8 h-8 p-1 bg-destructive"
+                onClick={() => router.push(`/product/${product.id}`)}
+              >
+                <Edit className="w-6 h-6" />
+              </Button>
+              <Button
+                className="w-8 h-8 p-1 bg-primary"
+                onClick={() => {
+                  onOpen("confirm", {
+                    confirmDialog: {
+                      title: "Confirm delete Product",
+                      description: `This action will delete ${product.title}`,
+                      onConfirm: confirmDelete,
+                    },
+                  });
+                }}
+              >
+                <Trash className="w-6 h-6" />
+              </Button>
+            </>
+          )}
         </div>
       </div>
       <div className="mt-2">
