@@ -1,4 +1,4 @@
-import { MainLayoutV2 } from "@/components";
+import { MainLayoutV2, ThemeProvider } from "@/components";
 import { cn } from "@/lib";
 import { auth } from "@/lib/auth/auth";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
@@ -43,9 +43,16 @@ export default async function LocaleLayout({
         routerConfig={extractRouterConfig(ourFileRouter)}
       />
       <body className={cn(inter.className, "overflow-hidden")}>
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          <MainLayoutV2 session={session}>{children}</MainLayoutV2>
-        </NextIntlClientProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            <MainLayoutV2 session={session}>{children}</MainLayoutV2>
+          </NextIntlClientProvider>
+        </ThemeProvider>
         <ToastContainer
           position="top-right"
           autoClose={5000}

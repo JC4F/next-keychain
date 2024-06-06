@@ -1,7 +1,14 @@
 import { Link } from "@/lib";
 import { Menu, Search, Settings } from "lucide-react";
-import { LocaleToggle, UserNav } from "../custom";
-import { Badge, Button, Input, Sheet, SheetContent, SheetTrigger } from "../ui";
+import { LocaleToggle, ThemeToggle, UserNav } from "../../custom";
+import {
+  Badge,
+  Button,
+  Input,
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "../../ui";
 import { topLinks } from "./main-layout-v2";
 
 export const Header = () => {
@@ -55,6 +62,7 @@ export const Header = () => {
           </div>
         </form>
       </div>
+      <ThemeToggle />
       <LocaleToggle />
       <UserNav />
     </header>

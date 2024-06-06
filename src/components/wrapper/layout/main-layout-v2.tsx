@@ -16,8 +16,8 @@ import { Session } from "next-auth/types";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { PropsWithChildren, useEffect } from "react";
-import { ConfirmDialog } from "../custom";
-import { Badge, Button } from "../ui";
+import { ConfirmDialog } from "../../custom";
+import { Badge, Button } from "../../ui";
 import { Header } from "./header";
 
 type SidebarLink = {

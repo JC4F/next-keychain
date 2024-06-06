@@ -13,7 +13,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { PropsWithChildren } from "react";
-import { Hint } from "../custom";
+import { Hint } from "../../custom";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -32,7 +32,7 @@ import {
   Sheet,
   SheetContent,
   SheetTrigger,
-} from "../ui";
+} from "../../ui";
 import { SidebarLink } from "./sidebar-link";
 
 type SidebarLink = {
