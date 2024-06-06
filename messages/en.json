@@ -1,0 +1,17 @@
+{
+  "home": {
+    "english": "English",
+    "vietnamese": "Vietnamese",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "not_found": {
+    "404_not_found": "404 Not Found",
+    "reason": "Could not find the requested.",
+    "go_back": "Go Back"
+  },
+  "error": {
+    "something_wrong": "Something went wrong",
+    "go_back": "Go back"
+  }
+}

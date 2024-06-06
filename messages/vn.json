@@ -1,0 +1,17 @@
+{
+  "home": {
+    "english": "Tiếng Anh",
+    "vietnamese": "Tiếng Việt",
+    "light": "Sáng",
+    "dark": "Tối"
+  },
+  "not_found": {
+    "404_not_found": "404 Không tìm thấy",
+    "reason": "Không tìm thấy Url.",
+    "go_back": "Quay trở lại"
+  },
+  "error": {
+    "something_wrong": "Có gì đó sai sai",
+    "go_back": "Quay trở lại"
+  }
+}

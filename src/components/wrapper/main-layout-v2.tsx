@@ -6,10 +6,8 @@ import {
   Bell,
   Home,
   LucideProps,
-  Menu,
   Package,
   Package2,
-  Search,
   Settings,
   ShoppingCart,
   Users2,
@@ -18,8 +16,9 @@ import { Session } from "next-auth/types";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { PropsWithChildren, useEffect } from "react";
-import { ConfirmDialog, UserNav } from "../custom";
-import { Badge, Button, Input, Sheet, SheetContent, SheetTrigger } from "../ui";
+import { ConfirmDialog } from "../custom";
+import { Badge, Button } from "../ui";
+import { Header } from "./header";
 
 type SidebarLink = {
   Icon: React.ForwardRefExoticComponent<
@@ -32,7 +31,7 @@ type SidebarLink = {
   role: ROLE[];
 };
 
-const topLinks: SidebarLink[] = [
+export const topLinks: SidebarLink[] = [
   {
     Icon: Home as any,
     title: "Dashboard",
@@ -75,7 +74,7 @@ export function MainLayoutV2({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (pathname === "/404") return <>{children}</>;
+  if (pathname === "/not-found") return <>{children}</>;
 
   return (
     <>
@@ -85,7 +84,7 @@ export function MainLayoutV2({
             <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
               <Link href="/" className="flex items-center gap-2 font-semibold">
                 <Package2 className="h-6 w-6" />
-                <span className="">Acme Inc</span>
+                <span className="">Pi Pi</span>
               </Link>
               <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
                 <Bell className="h-4 w-4" />
@@ -123,61 +122,7 @@ export function MainLayoutV2({
           </div>
         </div>
         <div className="flex flex-col">
-          <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="shrink-0 md:hidden"
-                >
-                  <Menu className="h-5 w-5" />
-                  <span className="sr-only">Toggle navigation menu</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left" className="flex flex-col">
-                <nav className="grid gap-2 text-lg font-medium">
-                  {topLinks.map(({ Icon, ...item }, index) => (
-                    <Link
-                      key={index}
-                      href={item.path}
-                      className="flex items-center gap-2 text-lg font-semibold"
-                    >
-                      <Icon className="h-4 w-4" />
-                      {item.title}
-                      {item.notifications && (
-                        <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                          {item.notifications}
-                        </Badge>
-                      )}
-                    </Link>
-                  ))}
-                </nav>
-                <div className="mt-auto">
-                  <Link
-                    href="#"
-                    className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                  >
-                    <Settings className="h-5 w-5" />
-                    Settings
-                  </Link>
-                </div>
-              </SheetContent>
-            </Sheet>
-            <div className="w-full flex-1">
-              <form>
-                <div className="relative">
-                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    type="search"
-                    placeholder="Search products..."
-                    className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
-                  />
-                </div>
-              </form>
-            </div>
-            <UserNav />
-          </header>
+          <Header />
           <div className="h-[calc(100vh-60px)] w-[100vw] md:w-[calc(100vw-280px)] rounded-md p-4 lg:gap-6 lg:p-6 overflow-auto">
             {children}
           </div>

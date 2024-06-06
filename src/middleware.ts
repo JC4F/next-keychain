@@ -1,6 +1,23 @@
 import { auth } from "@/lib/auth/auth";
-import { NextResponse } from "next/server";
-import { findRolesForPath } from "./lib";
+import createIntlMiddleware from "next-intl/middleware";
+import { NextRequest, NextResponse } from "next/server";
+import { findRolesForPath, locales } from "./lib";
+
+const intlMiddleware = createIntlMiddleware({
+  locales,
+  localePrefix: "as-needed",
+  defaultLocale: "en",
+});
+
+function IntlMiddleware(req: NextRequest) {
+  const defaultLocale = req.headers.get("x-your-custom-locale") || "en";
+
+  const response = intlMiddleware(req);
+  response.headers.set("x-your-custom-locale", defaultLocale);
+  response.headers.set("x-pathname", req.nextUrl.pathname);
+
+  return response;
+}
 
 export default auth((req) => {
   const session = req.auth;
@@ -10,10 +27,11 @@ export default auth((req) => {
 
   const roles = findRolesForPath(pathName);
 
+  // page not found
   if (!roles) return NextResponse.rewrite(new URL("/not-found", req.url));
 
   // route with no require role ~ public
-  if (roles.length === 0) return response;
+  if (roles.length === 0) return IntlMiddleware(req);
 
   // no public, require authenticated
   if (!session?.user) {
@@ -23,7 +41,7 @@ export default auth((req) => {
   if (!roles.includes(session?.user?.role))
     return NextResponse.rewrite(new URL("/not-found", req.url));
 
-  return response;
+  return IntlMiddleware(req);
 });
 
 export const config = {
