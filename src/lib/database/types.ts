@@ -4,6 +4,9 @@ import { GeneratedAlways } from "kysely";
 export interface Database {
   User: UserTable;
   Product: ProductTable;
+  Card: CardTable;
+  Order: OrderTable;
+  OrderItem: OrderItemTable;
   Account: AccountTable;
   Session: SessionTable;
   VerificationToken: VerificationTokenTable;
@@ -28,6 +31,43 @@ export interface ProductTable {
   price: number;
   quantity: number;
   status: PRODUCT_STATUS;
+  created_at: Date;
+  updated_at?: Date;
+  deleted_at?: Date;
+}
+
+export interface CardTable {
+  id: GeneratedAlways<string> | string;
+  userId: string;
+  productId: string;
+  quantity: number;
+  created_at: Date;
+  updated_at?: Date;
+  deleted_at?: Date;
+}
+
+export interface OrderTable {
+  id: GeneratedAlways<string> | string;
+  userId: string;
+  isCheckout: boolean;
+  address: string;
+  totalPrice: number;
+  created_at: Date;
+  updated_at?: Date;
+  deleted_at?: Date;
+}
+
+export interface OrderItemTable {
+  id: GeneratedAlways<string> | string;
+  userId: string;
+  orderId: string;
+  cardId: string;
+  mainImage: string;
+  images: string[];
+  title: string;
+  description: string;
+  price: number;
+  quantity: number;
   created_at: Date;
   updated_at?: Date;
   deleted_at?: Date;

@@ -3,7 +3,7 @@
 import { deleteProduct } from "@/actions";
 import { Button } from "@/components";
 import { ROLE } from "@/constants";
-import { useGlobalStore, useModalLayer2 } from "@/hooks";
+import { useGlobalStore, useModalLayer1, useModalLayer2 } from "@/hooks";
 import { cn } from "@/lib";
 import { ProductTable } from "@/lib/database/types";
 import { Edit, ShoppingCart, Trash } from "lucide-react";
@@ -25,7 +25,8 @@ export const ProductCard = ({
   width,
 }: ProductCardProps) => {
   const router = useRouter();
-  const { onOpen } = useModalLayer2();
+  const { onOpen: onOpenModalV1 } = useModalLayer1();
+  const { onOpen: onOpenModalV2 } = useModalLayer2();
   const {
     data: { user },
   } = useGlobalStore();
@@ -44,7 +45,12 @@ export const ProductCard = ({
 
   return (
     <div>
-      <div className="overflow-hidden w-full aspect-square rounded-md relative">
+      <div
+        className="overflow-hidden w-full aspect-square rounded-md relative cursor-pointer"
+        onClick={() => {
+          onOpenModalV1("product-detail", { product });
+        }}
+      >
         <Image
           src={product.mainImage}
           alt={product.title}
@@ -60,14 +66,18 @@ export const ProductCard = ({
             <>
               <Button
                 className="w-8 h-8 p-1 bg-destructive"
-                onClick={() => router.push(`/product/${product.id}`)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  router.push(`/product/${product.id}`);
+                }}
               >
                 <Edit className="w-6 h-6" />
               </Button>
               <Button
                 className="w-8 h-8 p-1 bg-primary"
-                onClick={() => {
-                  onOpen("confirm", {
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onOpenModalV2("confirm", {
                     confirmDialog: {
                       title: "Confirm delete Product",
                       description: `This action will delete ${product.title}`,

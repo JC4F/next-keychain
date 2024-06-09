@@ -9,6 +9,7 @@ import {
   Package,
   Package2,
   Settings,
+  ShoppingBasket,
   ShoppingCart,
   Users2,
 } from "lucide-react";
@@ -51,9 +52,15 @@ export const topLinks: SidebarLink[] = [
     role: [ROLE.ADMIN],
   },
   {
+    Icon: ShoppingBasket,
+    title: "Cards",
+    path: "/card",
+    role: [ROLE.ADMIN],
+  },
+  {
     Icon: Users2,
-    title: "Customers",
-    path: "/customer",
+    title: "Users",
+    path: "/user",
     role: [ROLE.ADMIN],
   },
 ];

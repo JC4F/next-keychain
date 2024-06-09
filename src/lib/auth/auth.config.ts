@@ -20,7 +20,7 @@ export default {
     async jwt({ token, user }) {
       if (user) {
         const userDbRes = await fetch(
-          `${process.env.APP_URL}/api/user?email=` + user.email
+          `${process.env.NEXT_PUBLIC_APP_URL}/api/user?email=` + user.email
         );
         const userDb = await userDbRes.json();
 
@@ -28,13 +28,16 @@ export default {
           token.role = userDb.data.role;
           token.id = userDb.data.id;
         } else {
-          const userDbTmpRes = await fetch(`${process.env.APP_URL}/api/user`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(user),
-          });
+          const userDbTmpRes = await fetch(
+            `${process.env.NEXT_PUBLIC_APP_URL}/api/user`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(user),
+            }
+          );
           const userDbTmp = await userDbTmpRes.json();
           token.role = userDbTmp.data.role;
           token.id = userDbTmp.data.id;

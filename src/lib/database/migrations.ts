@@ -51,6 +51,70 @@ export async function up(db: Kysely<any>): Promise<void> {
     .execute();
 
   await db.schema
+    .createTable("Card")
+    .addColumn("id", "uuid", (col) =>
+      col.primaryKey().defaultTo(sql`gen_random_uuid()`)
+    )
+    .addColumn("userId", "uuid", (col) =>
+      col.references("User.id").onDelete("cascade").notNull()
+    )
+    .addColumn("productId", "uuid", (col) =>
+      col.references("Product.id").onDelete("cascade").notNull()
+    )
+    .addColumn("quantity", "integer")
+    .addColumn("created_at", "timestamp", (col) =>
+      col.defaultTo(sql`now()`).notNull()
+    )
+    .addColumn("updated_at", "timestamp")
+    .addColumn("deleted_at", "timestamp")
+    .execute();
+
+  await db.schema
+    .createTable("Order")
+    .addColumn("id", "uuid", (col) =>
+      col.primaryKey().defaultTo(sql`gen_random_uuid()`)
+    )
+    .addColumn("userId", "uuid", (col) =>
+      col.references("User.id").onDelete("cascade").notNull()
+    )
+    .addColumn("isCheckout", "boolean", (col) => col.defaultTo(false).notNull())
+    .addColumn("address", "varchar", (col) => col.notNull())
+    .addColumn("totalPrice", "numeric(8, 2)")
+    .addColumn("created_at", "timestamp", (col) =>
+      col.defaultTo(sql`now()`).notNull()
+    )
+    .addColumn("updated_at", "timestamp")
+    .addColumn("deleted_at", "timestamp")
+    .execute();
+
+  await db.schema
+    .createTable("OrderItem")
+    .addColumn("id", "uuid", (col) =>
+      col.primaryKey().defaultTo(sql`gen_random_uuid()`)
+    )
+    .addColumn("userId", "uuid", (col) =>
+      col.references("User.id").onDelete("cascade").notNull()
+    )
+    .addColumn("orderId", "uuid", (col) =>
+      col.references("Order.id").onDelete("cascade").notNull()
+    )
+    .addColumn("cardId", "uuid", (col) =>
+      col.references("Card.id").onDelete("set null").notNull()
+    )
+    .addColumn("mainImage", "varchar", (col) => col.notNull())
+    .addColumn("images", sql`text[]`, (col) => col.notNull())
+    .addColumn("title", "varchar", (col) => col.notNull())
+    .addColumn("description", "varchar", (col) => col.notNull())
+    .addColumn("price", "numeric(8, 2)")
+    .addColumn("quantity", "integer")
+    .addColumn("created_at", "timestamp", (col) =>
+      col.defaultTo(sql`now()`).notNull()
+    )
+    .addColumn("updated_at", "timestamp")
+    .addColumn("deleted_at", "timestamp")
+    .execute();
+
+  await db.schema
     .createTable("Account")
     .addColumn("id", "uuid", (col) =>
       col.primaryKey().defaultTo(sql`gen_random_uuid()`)

@@ -26,12 +26,13 @@ import { File, ListFilter, PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { Key } from "react";
 import { ProductCard } from "./product-card";
+import { ProductDetailDialog } from "./product-detail-dialog";
 
-type ListProductProps = {
+type ProductWrapperProps = {
   products: ProductTable[] | null;
 };
 
-export const ListProduct = ({ products }: ListProductProps) => {
+export const ProductWrapper = ({ products }: ProductWrapperProps) => {
   const {
     data: { user },
     setData,
@@ -118,6 +119,8 @@ export const ListProduct = ({ products }: ListProductProps) => {
           </Card>
         </TabsContent>
       </Tabs>
+
+      <ProductDetailDialog />
     </main>
   );
 };

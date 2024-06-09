@@ -45,7 +45,7 @@ export const ProductWrapper = ({ product }: ProductWrapperProps) => {
     const data = {
       title,
       description,
-      mainImage: images[0],
+      mainImage,
       images,
       price,
       quantity,

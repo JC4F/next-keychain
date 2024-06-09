@@ -1,13 +1,10 @@
+import { ProductTable } from "@/lib/database/types";
 import { create } from "zustand";
 
-type ModalType = "confirm";
+type ModalType = "product-detail";
 
 interface ModalData {
-  confirmDialog?: {
-    title?: string;
-    description?: string;
-    onConfirm: (...arg: any) => any;
-  };
+  product?: ProductTable;
 }
 
 interface ModalStore {
@@ -19,7 +16,7 @@ interface ModalStore {
   onClose: () => void;
 }
 
-export const useModalLayer2 = create<ModalStore>((set) => ({
+export const useModalLayer1 = create<ModalStore>((set) => ({
   type: null,
   data: {},
   isOpen: false,

@@ -1,8 +1,8 @@
 import { fetchProducts } from "@/actions";
-import { ListProduct } from "./_components/list-product";
+import { ProductWrapper } from "./_components/product-wrapper";
 
 export default async function Page() {
   const products = await fetchProducts();
 
-  return <ListProduct products={products.data} />;
+  return <ProductWrapper products={products.data} />;
 }

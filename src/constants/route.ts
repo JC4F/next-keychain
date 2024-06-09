@@ -28,6 +28,10 @@ export const RouteWithRoles: Route[] = [
     roles: [],
   },
   {
+    path: "/card",
+    roles: [ROLE.ADMIN, ROLE.USER],
+  },
+  {
     path: "/setting",
     roles: [],
   },
