@@ -37,18 +37,18 @@ export async function POST(request: Request) {
       title: item.title,
       description: item.description,
       price: item.price,
+      quantity: item.quantity,
     }));
     await db.insertInto("OrderItem").values(orderItems).execute();
 
+    const lineItems = data.orders.map((item: any) => ({
+      price: item.externalPriceId,
+      quantity: item.quantity,
+    }));
+
     // Create Checkout Sessions from body params.
     const stripeSession = await stripe.checkout.sessions.create({
-      line_items: [
-        {
-          // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-          price: "price_1PPbCyFoKPoHr2nxrIMHK4NX",
-          quantity: 2,
-        },
-      ],
+      line_items: lineItems,
       mode: "payment",
       success_url: `${process.env.NEXT_PUBLIC_APP_URL}/product?success=true`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/product?canceled=true`,

@@ -24,6 +24,8 @@ export interface UserTable {
 
 export interface ProductTable {
   id: GeneratedAlways<string> | string;
+  externalProductId: string;
+  externalPriceId: string;
   mainImage: string;
   images: string[];
   title: string;

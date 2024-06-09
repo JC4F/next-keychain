@@ -29,13 +29,15 @@ export const seedData = async () => {
       // @ts-ignore
       .values([
         {
+          externalProductId: "prod_QGKz1nyhdeeJc3",
+          externalPriceId: "price_1PPoJ6FoKPoHr2nxmuMVfLil",
           mainImage:
             "https://utfs.io/f/2ae10e8b-0492-49cf-a916-c9db01459eb4-1zya8.webp",
           images: [
             "https://utfs.io/f/2ae10e8b-0492-49cf-a916-c9db01459eb4-1zya8.webp",
             "https://utfs.io/f/f96c65b1-39fa-49a3-8786-879acf12c41b-1zya9.webp",
           ],
-          title: "Moc 1",
+          title: "Test Moc 1",
           description: "Description",
           price: 12.04,
           quantity: 10,
@@ -43,13 +45,15 @@ export const seedData = async () => {
           created_at: new Date(),
         },
         {
+          externalProductId: "prod_QGKzfnCE06XUFF",
+          externalPriceId: "price_1PPoJYFoKPoHr2nxIMylQqid",
           mainImage:
             "https://utfs.io/f/2ae10e8b-0492-49cf-a916-c9db01459eb4-1zya8.webp",
           images: [
             "https://utfs.io/f/2ae10e8b-0492-49cf-a916-c9db01459eb4-1zya8.webp",
             "https://utfs.io/f/f96c65b1-39fa-49a3-8786-879acf12c41b-1zya9.webp",
           ],
-          title: "Moc 2",
+          title: "Test Moc 2",
           description: "Description",
           price: 14.04,
           quantity: 20,

@@ -78,6 +78,8 @@ export const CardWrapper = ({ cards: listCards }: CardWrapperProps) => {
         .filter((card) => card.isChosen && card.quantity > 0)
         .map((card) => ({
           cardId: card.id,
+          externalPriceId: card.product.externalPriceId,
+          externalProductId: card.product.externalProductId,
           productId: card.product.id,
           userId: card.userId,
           quantity: card.quantity,

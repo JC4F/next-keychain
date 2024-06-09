@@ -36,6 +36,8 @@ export async function up(db: Kysely<any>): Promise<void> {
     .addColumn("id", "uuid", (col) =>
       col.primaryKey().defaultTo(sql`gen_random_uuid()`)
     )
+    .addColumn("externalProductId", "varchar", (col) => col.notNull())
+    .addColumn("externalPriceId", "varchar", (col) => col.notNull())
     .addColumn("mainImage", "varchar", (col) => col.notNull())
     .addColumn("images", sql`text[]`, (col) => col.notNull())
     .addColumn("title", "varchar", (col) => col.notNull())
@@ -99,7 +101,7 @@ export async function up(db: Kysely<any>): Promise<void> {
       col.references("Order.id").onDelete("cascade").notNull()
     )
     .addColumn("cardId", "uuid", (col) =>
-      col.references("Card.id").onDelete("set null").notNull()
+      col.references("Card.id").onDelete("set null")
     )
     .addColumn("mainImage", "varchar", (col) => col.notNull())
     .addColumn("images", sql`text[]`, (col) => col.notNull())
