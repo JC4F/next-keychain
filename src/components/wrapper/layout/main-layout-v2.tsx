@@ -7,7 +7,7 @@ import {
   Home,
   LucideProps,
   Package,
-  Package2,
+  PiggyBank,
   Settings,
   ShoppingBasket,
   ShoppingCart,
@@ -40,25 +40,25 @@ export const topLinks: SidebarLink[] = [
     role: [ROLE.ADMIN],
   },
   {
-    Icon: ShoppingCart,
-    title: "Orders",
-    path: "/order",
+    Icon: Package as any,
+    title: "Products",
+    path: "/product",
     role: [],
   },
   {
-    Icon: Package,
-    title: "Products",
-    path: "/product",
-    role: [ROLE.ADMIN],
-  },
-  {
-    Icon: ShoppingBasket,
+    Icon: ShoppingBasket as any,
     title: "Cards",
     path: "/card",
-    role: [ROLE.ADMIN],
+    role: [ROLE.USER],
   },
   {
-    Icon: Users2,
+    Icon: ShoppingCart as any,
+    title: "Orders",
+    path: "/order",
+    role: [ROLE.USER],
+  },
+  {
+    Icon: Users2 as any,
     title: "Users",
     path: "/user",
     role: [ROLE.ADMIN],
@@ -90,7 +90,7 @@ export function MainLayoutV2({
           <div className="flex h-full max-h-screen flex-col gap-2">
             <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
               <Link href="/" className="flex items-center gap-2 font-semibold">
-                <Package2 className="h-6 w-6" />
+                <PiggyBank className="h-6 w-6" />
                 <span className="">Pi Pi</span>
               </Link>
               <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
@@ -100,21 +100,31 @@ export function MainLayoutV2({
             </div>
             <div className="flex-1">
               <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-                {topLinks.map(({ Icon, ...item }, index) => (
-                  <Link
-                    key={index}
-                    href={item.path}
-                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-                  >
-                    <Icon className="h-4 w-4" />
-                    {item.title}
-                    {item.notifications && (
-                      <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                        {item.notifications}
-                      </Badge>
-                    )}
-                  </Link>
-                ))}
+                {topLinks.map(({ Icon, ...item }, index) => {
+                  if (
+                    item.role.length > 0 &&
+                    !item.role.includes((session?.user?.role || "") as ROLE)
+                  )
+                    return null;
+                  return (
+                    <Link
+                      key={index}
+                      href={item.path}
+                      className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
+                        pathname === item.path &&
+                        "text-primary-foreground bg-foreground hover:text-primary-foreground"
+                      }`}
+                    >
+                      <Icon className="h-5 w-5" />
+                      {item.title}
+                      {item.notifications && (
+                        <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
+                          {item.notifications}
+                        </Badge>
+                      )}
+                    </Link>
+                  );
+                })}
               </nav>
             </div>
             <div className="mt-auto p-4">

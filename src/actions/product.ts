@@ -52,7 +52,7 @@ export async function createProduct(data: any) {
       description: data.description,
       images: data.images,
       default_price_data: {
-        unit_amount: data.price,
+        unit_amount_decimal: data.price * 100 + "",
         currency: "usd",
       },
       expand: ["default_price"],
@@ -76,13 +76,13 @@ export async function createProduct(data: any) {
 
 export async function editProduct(id: string, data: any) {
   try {
-    await stripe.products.del(data.externalProductId);
+    // await stripe.products.del(data.externalProductId);
     const product = await stripe.products.create({
       name: data.title,
       description: data.description,
       images: data.images,
       default_price_data: {
-        unit_amount: data.price,
+        unit_amount_decimal: data.price * 100 + "",
         currency: "usd",
       },
       expand: ["default_price"],
@@ -107,13 +107,13 @@ export async function editProduct(id: string, data: any) {
 
 export async function deleteProduct(id: string) {
   try {
-    const product = (await db
-      .selectFrom("Product")
-      .where("id", "=", id)
-      .selectAll()
-      .executeTakeFirst()) as ProductTable;
+    // const product = (await db
+    //   .selectFrom("Product")
+    //   .where("id", "=", id)
+    //   .selectAll()
+    //   .executeTakeFirst()) as ProductTable;
 
-    await stripe.products.del(product.externalProductId);
+    // await stripe.products.del(product.externalProductId);
     await db.deleteFrom("Product").where("id", "=", id).execute();
 
     return handleResponse(true, "Delete product success!", null);

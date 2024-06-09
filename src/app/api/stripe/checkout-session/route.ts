@@ -50,8 +50,8 @@ export async function POST(request: Request) {
     const stripeSession = await stripe.checkout.sessions.create({
       line_items: lineItems,
       mode: "payment",
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/product?success=true`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/product?canceled=true`,
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/order?success=true`,
+      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/order?canceled=true`,
       payment_intent_data: {
         metadata: {
           orderId: order?.id!,

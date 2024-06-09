@@ -46,6 +46,7 @@ export const CardWrapper = ({ cards: listCards }: CardWrapperProps) => {
     }));
   });
   const [isChoseAll, setIsChoseAll] = useState(true);
+  const [isSubmitCheckout, setIsSubmitCheckout] = useState(false);
   const [address, setAddress] = useState("");
   const totalPrice = Number(
     cards.reduce((result, cur) => {
@@ -70,6 +71,12 @@ export const CardWrapper = ({ cards: listCards }: CardWrapperProps) => {
     setIsChoseAll(cards.length > 0 && cards.every((card) => card.isChosen));
   }, [cards]);
 
+  useEffect(() => {
+    return () => {
+      setIsSubmitCheckout(false);
+    };
+  }, []);
+
   const handleCheckout = () => {
     const data = {
       address,
@@ -91,6 +98,7 @@ export const CardWrapper = ({ cards: listCards }: CardWrapperProps) => {
         })),
     };
 
+    setIsSubmitCheckout(true);
     fetch("/api/stripe/checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -267,7 +275,11 @@ export const CardWrapper = ({ cards: listCards }: CardWrapperProps) => {
               </ul>
             </div>
             <Separator className="my-4" />
-            <Button className="w-full" onClick={handleCheckout}>
+            <Button
+              className="w-full"
+              onClick={handleCheckout}
+              disabled={isSubmitCheckout || cards.length === 0}
+            >
               Checkout
             </Button>
 

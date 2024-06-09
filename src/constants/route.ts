@@ -17,7 +17,7 @@ export const RouteWithRoles: Route[] = [
   },
   {
     path: "/order",
-    roles: [ROLE.ADMIN, ROLE.USER],
+    roles: [ROLE.USER],
   },
   {
     path: "/product/(.+)",
@@ -29,7 +29,7 @@ export const RouteWithRoles: Route[] = [
   },
   {
     path: "/card",
-    roles: [ROLE.ADMIN, ROLE.USER],
+    roles: [ROLE.USER],
   },
   {
     path: "/setting",

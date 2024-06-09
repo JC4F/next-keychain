@@ -47,9 +47,11 @@ export const ProductWrapper = ({ product }: ProductWrapperProps) => {
       description,
       mainImage,
       images,
-      price,
-      quantity,
+      price: Number(price).toFixed(2),
+      quantity: Math.round(quantity),
       status,
+      externalPriceId: product?.externalPriceId,
+      externalProductId: product?.externalProductId,
     };
     let result;
     if (product) {
