@@ -2,15 +2,17 @@ import { MainLayoutV2, ThemeProvider } from "@/components";
 import { cn } from "@/lib";
 import { auth } from "@/lib/auth/auth";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-import { Inter } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "../api/uploadthing/core";
 
-const inter = Inter({ subsets: ["latin"] });
+const fontSans = GeistSans;
+
+// const inter = Inter({ subsets: ["latin"] });
 
 type Props = {
   children: React.ReactNode;
@@ -33,7 +35,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body className={cn(inter.className, "overflow-hidden")}>
+      <body className={cn(fontSans.className, "overflow-hidden")}>
         <NextSSRPlugin
           /**
            * The `extractRouterConfig` will extract **only** the route configs

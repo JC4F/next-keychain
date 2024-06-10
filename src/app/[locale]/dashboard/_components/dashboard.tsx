@@ -126,12 +126,12 @@ export const Dashboard = ({ orders: listOrders }: DashboardProps) => {
             </CardFooter>
           </Card>
         </div>
-        <Card>
+        <Card className="overflow-hidden">
           <CardHeader className="px-7">
             <CardTitle>Orders</CardTitle>
             <CardDescription>Recent orders from your store.</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="overflow-auto">
             <Table>
               <TableHeader>
                 <TableRow>

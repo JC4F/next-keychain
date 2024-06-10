@@ -102,7 +102,7 @@ export const ProductWrapper = ({
           </div>
         </div>
         <TabsContent value="all">
-          <Card x-chunk="dashboard-06-chunk-0">
+          <Card>
             <CardHeader>
               <CardTitle>Products</CardTitle>
               <CardDescription>
@@ -110,7 +110,7 @@ export const ProductWrapper = ({
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-8">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8">
                 {curProducts.map((product) => (
                   <ProductCard
                     key={product.id as unknown as Key}
