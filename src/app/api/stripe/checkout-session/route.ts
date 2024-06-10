@@ -52,6 +52,9 @@ export async function POST(request: Request) {
       mode: "payment",
       success_url: `${process.env.NEXT_PUBLIC_APP_URL}/order?success=true`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/card?canceled=true`,
+      metadata: {
+        orderId: order?.id!,
+      },
       payment_intent_data: {
         metadata: {
           orderId: order?.id!,

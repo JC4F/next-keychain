@@ -83,8 +83,8 @@ export const ProductDetailDialog = () => {
                 src={hoverImage}
                 alt={"Product Image"}
                 className="h-auto w-full object-cover transition-all hover:scale-105 rounded aspect-square"
-                width={150}
-                height={150}
+                width={500}
+                height={500}
               />
             </div>
             <Carousel>
@@ -121,7 +121,9 @@ export const ProductDetailDialog = () => {
               <span className="text-lg font-semibold text-destructive">
                 ${product.price}
               </span>
-              <span className="text-sm text-gray-500">- 3 In stock</span>
+              <span className="text-sm text-gray-500">
+                - {product.quantity} In stock
+              </span>
             </div>
             <div className="flex items-center gap-2 mb-3">
               <span className="text-gray-500">Quantity:</span>
@@ -129,12 +131,11 @@ export const ProductDetailDialog = () => {
                 type="number"
                 value={quantity}
                 onChange={(e) => setQuantity(+e.target.value)}
-                className="w-16 h-8 px-2 border rounded-md"
+                className="w-16 h-8 px-2 border rounded-md flex-1"
               />
             </div>
             {user && (
               <Button
-                variant="destructive"
                 className="ml-auto block"
                 disabled={isSubmit}
                 onClick={handleSubmit}

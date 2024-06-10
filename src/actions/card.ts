@@ -4,6 +4,7 @@ import { handleResponse } from "@/lib";
 import db from "@/lib/database/db";
 import { CardTable } from "@/lib/database/types";
 import { jsonObjectFrom } from "kysely/helpers/postgres";
+import { revalidatePath } from "next/cache";
 
 export async function fetchCards(userId: string) {
   try {
@@ -54,7 +55,22 @@ export async function fetchCardById(id: string) {
 
 export async function createCard(data: any) {
   try {
-    await db.insertInto("Card").values(data).execute();
+    const oldCard = await db
+      .selectFrom("Card")
+      .selectAll()
+      .where("productId", "=", data.productId)
+      .executeTakeFirst();
+
+    if (oldCard)
+      await db
+        .updateTable("Card")
+        .where("id", "=", data.id)
+        .set({
+          quantity: oldCard.quantity + data.quantity,
+        })
+        .execute();
+    else await db.insertInto("Card").values(data).execute();
+    revalidatePath("/card");
 
     return handleResponse(true, "Create card success!", null);
   } catch (error) {

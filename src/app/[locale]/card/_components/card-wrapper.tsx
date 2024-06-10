@@ -1,5 +1,6 @@
 "use client";
 
+import { deleteCard } from "@/actions";
 import {
   Button,
   Card,
@@ -20,11 +21,14 @@ import {
   TableRow,
   Textarea,
 } from "@/components";
+import { useModalLayer2 } from "@/hooks";
 import { formatDate } from "@/lib";
 import { CardTable, ProductTable } from "@/lib/database/types";
 import { Trash } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Key, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 type Card = CardTable & {
   product: ProductTable;
@@ -39,6 +43,8 @@ type CardWrapperProps = {
 // );
 
 export const CardWrapper = ({ cards: listCards }: CardWrapperProps) => {
+  const router = useRouter();
+  const { onOpen: onOpenModalV2 } = useModalLayer2();
   const [cards, setCards] = useState(() => {
     return listCards.map((card) => ({
       ...card,
@@ -66,6 +72,28 @@ export const CardWrapper = ({ cards: listCards }: CardWrapperProps) => {
   //     .then((res) => res.json())
   //     .then((data) => setClientSecret(data.clientSecret));
   // }, []);
+
+  const confirmDelete = async (id: string) => {
+    const result = await deleteCard(id);
+
+    if (result.isSuccess) {
+      toast.success(result.message);
+
+      router.refresh();
+    } else {
+      toast.error(result.message);
+    }
+  };
+
+  useEffect(() => {
+    setCards((pre) =>
+      listCards.map((item) => ({
+        ...item,
+        isChosen:
+          pre.find((preCard) => preCard.id === item.id)?.isChosen || false,
+      }))
+    );
+  }, [listCards]);
 
   useEffect(() => {
     setIsChoseAll(cards.length > 0 && cards.every((card) => card.isChosen));
@@ -208,7 +236,21 @@ export const CardWrapper = ({ cards: listCards }: CardWrapperProps) => {
                       {formatDate(new Date(card.product.created_at))}
                     </TableCell>
                     <TableCell>
-                      <Button aria-haspopup="true" size="icon" variant="ghost">
+                      <Button
+                        aria-haspopup="true"
+                        size="icon"
+                        variant="ghost"
+                        onClick={() => {
+                          onOpenModalV2("confirm", {
+                            confirmDialog: {
+                              title: "Confirm delete Cart",
+                              description: `This action will delete ${card.product.title}`,
+                              onConfirm: async () =>
+                                await confirmDelete(card.id as string),
+                            },
+                          });
+                        }}
+                      >
                         <Trash className="h-4 w-4" />
                       </Button>
                     </TableCell>

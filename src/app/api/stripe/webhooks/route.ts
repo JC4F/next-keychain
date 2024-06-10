@@ -1,5 +1,6 @@
 import db from "@/lib/database/db";
 import { OrderItemTable } from "@/lib/database/types";
+import { jsonObjectFrom } from "kysely/helpers/postgres";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
@@ -61,8 +62,41 @@ export async function POST(request: Request) {
       console.log(orderId, orderItems);
 
       orderItems.forEach(async (item) => {
+        const card = await db
+          .selectFrom("Card")
+          .where("id", "=", item.cardId)
+          .select((eb) => [
+            "productId",
+            jsonObjectFrom(
+              eb
+                .selectFrom("Product")
+                .selectAll()
+                .whereRef("Product.id", "=", "Card.productId")
+            ).as("product"),
+          ])
+          .executeTakeFirst();
+        if (!card?.product?.quantity) {
+          // refund
+          // not process
+        }
+
+        const newQuantity = card?.product?.quantity! - item.quantity;
+        await db
+          .updateTable("Product")
+          .where("id", "=", card?.productId!)
+          .set({
+            quantity: newQuantity < 0 ? 0 : newQuantity,
+          })
+          .execute();
+
         await db.deleteFrom("Card").where("id", "=", item.cardId).execute();
       });
+
+      break;
+    }
+    case "checkout.session.expired": {
+      const orderId = session.metadata?.orderId!;
+      await db.deleteFrom("Order").where("id", "=", orderId).executeTakeFirst();
 
       break;
     }
