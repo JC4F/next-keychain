@@ -140,7 +140,7 @@ export function MainLayoutV2({
         </div>
         <div className="flex flex-col">
           <Header />
-          <div className="h-[calc(100vh-60px)] w-[100vw] md:w-[calc(100vw-280px)] rounded-md p-4 lg:gap-6 lg:p-6 overflow-auto">
+          <div className="h-[calc(100vh-60px)] w-[100vw] md:w-[calc(100vw-220px)] lg:w-[calc(100vw-280px)] rounded-md p-4 lg:gap-6 lg:p-6 overflow-auto">
             {children}
           </div>
         </div>

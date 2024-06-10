@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Badge,
   Button,
@@ -7,6 +9,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  CustomPagination,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -37,7 +40,7 @@ import {
   Truck,
   User,
 } from "lucide-react";
-import { Key } from "react";
+import { Key, useState } from "react";
 
 type OrderItem = OrderTable & {
   user: UserTable;
@@ -47,12 +50,20 @@ export type DashboardProps = {
   orders: OrderItem[];
 };
 
-export const Dashboard = ({ orders }: DashboardProps) => {
+export const Dashboard = ({ orders: listOrders }: DashboardProps) => {
+  const [orders, setOrders] = useState(listOrders);
+  const [pageSize, setpageSize] = useState(5);
+  const [currentPage, setcurrentPage] = useState(1);
+
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = currentPage * pageSize;
+  const curOrders = orders.slice(startIndex, endIndex);
+
   return (
     <main className="grid flex-1 items-start gap-4 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
       <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
         <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
-          <Card x-chunk="dashboard-05-chunk-1">
+          <Card>
             <CardHeader className="pb-2">
               <CardDescription>Users</CardDescription>
               <CardTitle className="text-4xl flex items-center">
@@ -69,7 +80,7 @@ export const Dashboard = ({ orders }: DashboardProps) => {
               <Progress value={25} aria-label="25% increase" />
             </CardFooter>
           </Card>
-          <Card x-chunk="dashboard-05-chunk-1">
+          <Card>
             <CardHeader className="pb-2">
               <CardDescription>Products</CardDescription>
               <CardTitle className="text-4xl flex items-center">
@@ -86,7 +97,7 @@ export const Dashboard = ({ orders }: DashboardProps) => {
               <Progress value={25} aria-label="25% increase" />
             </CardFooter>
           </Card>
-          <Card x-chunk="dashboard-05-chunk-1">
+          <Card>
             <CardHeader className="pb-2">
               <CardDescription>Revenue</CardDescription>
               <CardTitle className="text-4xl">$1,329</CardTitle>
@@ -100,7 +111,7 @@ export const Dashboard = ({ orders }: DashboardProps) => {
               <Progress value={25} aria-label="25% increase" />
             </CardFooter>
           </Card>
-          <Card x-chunk="dashboard-05-chunk-2">
+          <Card>
             <CardHeader className="pb-2">
               <CardDescription>Revenue</CardDescription>
               <CardTitle className="text-4xl">$5,329</CardTitle>
@@ -115,7 +126,7 @@ export const Dashboard = ({ orders }: DashboardProps) => {
             </CardFooter>
           </Card>
         </div>
-        <Card x-chunk="dashboard-05-chunk-3">
+        <Card>
           <CardHeader className="px-7">
             <CardTitle>Orders</CardTitle>
             <CardDescription>Recent orders from your store.</CardDescription>
@@ -132,7 +143,7 @@ export const Dashboard = ({ orders }: DashboardProps) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {orders.map((order) => (
+                {curOrders.map((order) => (
                   <TableRow key={order.id as unknown as Key}>
                     <TableCell>
                       <div className="font-medium">{order.user.name}</div>
@@ -157,10 +168,20 @@ export const Dashboard = ({ orders }: DashboardProps) => {
               </TableBody>
             </Table>
           </CardContent>
+
+          <CardFooter>
+            <CustomPagination
+              pageSize={pageSize}
+              setPageSize={setpageSize}
+              currentPage={currentPage}
+              setCurrentPage={setcurrentPage}
+              total={orders.length}
+            />
+          </CardFooter>
         </Card>
       </div>
       <div>
-        <Card className="overflow-hidden" x-chunk="dashboard-05-chunk-4">
+        <Card className="overflow-hidden">
           <CardHeader className="flex flex-row items-start bg-muted/50">
             <div className="grid gap-0.5">
               <CardTitle className="group flex items-center gap-2 text-lg">

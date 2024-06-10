@@ -3,7 +3,9 @@
 import { signIn, signOut } from "@/lib/auth/auth";
 
 export async function login() {
-  return await signIn("google");
+  return await signIn("google", {
+    redirectTo: "/product",
+  });
 }
 
 export async function logout() {

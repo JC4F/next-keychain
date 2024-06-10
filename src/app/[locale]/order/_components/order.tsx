@@ -1,10 +1,14 @@
+"use client";
+
 import {
   Badge,
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
+  CustomPagination,
   Table,
   TableBody,
   TableCell,
@@ -14,7 +18,7 @@ import {
 } from "@/components";
 import { formatDate } from "@/lib";
 import { OrderTable, UserTable } from "@/lib/database/types";
-import { Key } from "react";
+import { Key, useState } from "react";
 
 type OrderItem = OrderTable & {
   user: UserTable;
@@ -24,7 +28,15 @@ export type OrderProps = {
   orders: OrderItem[];
 };
 
-export const Order = ({ orders }: OrderProps) => {
+export const Order = ({ orders: listOrders }: OrderProps) => {
+  const [orders, setOrders] = useState(listOrders);
+  const [pageSize, setpageSize] = useState(5);
+  const [currentPage, setcurrentPage] = useState(1);
+
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = currentPage * pageSize;
+  const curOrders = orders.slice(startIndex, endIndex);
+
   return (
     <main>
       <Card>
@@ -44,7 +56,7 @@ export const Order = ({ orders }: OrderProps) => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {orders.map((order) => (
+              {curOrders.map((order) => (
                 <TableRow key={order.id as unknown as Key}>
                   <TableCell>
                     <div className="font-medium">{order.user.name}</div>
@@ -69,6 +81,16 @@ export const Order = ({ orders }: OrderProps) => {
             </TableBody>
           </Table>
         </CardContent>
+
+        <CardFooter>
+          <CustomPagination
+            pageSize={pageSize}
+            setPageSize={setpageSize}
+            currentPage={currentPage}
+            setCurrentPage={setcurrentPage}
+            total={orders.length}
+          />
+        </CardFooter>
       </Card>
     </main>
   );

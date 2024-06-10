@@ -8,6 +8,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  CustomPagination,
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
@@ -24,19 +25,28 @@ import { useGlobalStore } from "@/hooks";
 import { ProductTable } from "@/lib/database/types";
 import { File, ListFilter, PlusCircle } from "lucide-react";
 import Link from "next/link";
-import { Key } from "react";
+import { Key, useState } from "react";
 import { ProductCard } from "./product-card";
 import { ProductDetailDialog } from "./product-detail-dialog";
 
 type ProductWrapperProps = {
-  products: ProductTable[] | null;
+  products: ProductTable[];
 };
 
-export const ProductWrapper = ({ products }: ProductWrapperProps) => {
+export const ProductWrapper = ({
+  products: listProducts,
+}: ProductWrapperProps) => {
   const {
     data: { user },
     setData,
   } = useGlobalStore();
+  const [products, setProducts] = useState(listProducts);
+  const [pageSize, setpageSize] = useState(5);
+  const [currentPage, setcurrentPage] = useState(1);
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = currentPage * pageSize;
+
+  const curProducts = products.slice(startIndex, endIndex);
 
   return (
     <main className="flex flex-1 flex-col gap-4">
@@ -101,7 +111,7 @@ export const ProductWrapper = ({ products }: ProductWrapperProps) => {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-8">
-                {products?.map((product) => (
+                {curProducts.map((product) => (
                   <ProductCard
                     key={product.id as unknown as Key}
                     product={product}
@@ -112,9 +122,13 @@ export const ProductWrapper = ({ products }: ProductWrapperProps) => {
               </div>
             </CardContent>
             <CardFooter>
-              <div className="text-xs text-muted-foreground">
-                Showing <strong>1-10</strong> of <strong>32</strong> products
-              </div>
+              <CustomPagination
+                pageSize={pageSize}
+                setPageSize={setpageSize}
+                currentPage={currentPage}
+                setCurrentPage={setcurrentPage}
+                total={products.length}
+              />
             </CardFooter>
           </Card>
         </TabsContent>

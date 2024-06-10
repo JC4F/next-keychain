@@ -57,14 +57,16 @@ export async function createCard(data: any) {
   try {
     const oldCard = await db
       .selectFrom("Card")
-      .selectAll()
+      .where("userId", "=", data.userId)
       .where("productId", "=", data.productId)
+      .selectAll()
       .executeTakeFirst();
 
     if (oldCard)
       await db
         .updateTable("Card")
-        .where("id", "=", data.id)
+        .where("userId", "=", data.userId)
+        .where("productId", "=", data.productId)
         .set({
           quantity: oldCard.quantity + data.quantity,
         })

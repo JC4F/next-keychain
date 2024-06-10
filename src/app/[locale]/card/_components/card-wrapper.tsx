@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
   Checkbox,
+  CustomPagination,
   Input,
   Label,
   Separator,
@@ -38,10 +39,6 @@ type CardWrapperProps = {
   cards: Card[];
 };
 
-// const stripePromise = loadStripe(
-//   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
-// );
-
 export const CardWrapper = ({ cards: listCards }: CardWrapperProps) => {
   const router = useRouter();
   const { onOpen: onOpenModalV2 } = useModalLayer2();
@@ -52,26 +49,20 @@ export const CardWrapper = ({ cards: listCards }: CardWrapperProps) => {
     }));
   });
   const [isChoseAll, setIsChoseAll] = useState(true);
+  const [pageSize, setpageSize] = useState(5);
+  const [currentPage, setcurrentPage] = useState(1);
   const [isSubmitCheckout, setIsSubmitCheckout] = useState(false);
   const [address, setAddress] = useState("");
+
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = currentPage * pageSize;
+  const curCards = cards.slice(startIndex, endIndex);
   const totalPrice = Number(
     cards.reduce((result, cur) => {
       if (!cur.isChosen) return result;
       return result + cur.product.price * cur.quantity;
     }, 0)
   ).toFixed(2);
-  // const [clientSecret, setClientSecret] = useState("");
-
-  // useEffect(() => {
-  //   // Create PaymentIntent as soon as the page loads
-  //   fetch("/api/stripe/create-payment-intent", {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify({ items: [{ id: "xl-tshirt" }] }),
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => setClientSecret(data.clientSecret));
-  // }, []);
 
   const confirmDelete = async (id: string) => {
     const result = await deleteCard(id);
@@ -136,18 +127,10 @@ export const CardWrapper = ({ cards: listCards }: CardWrapperProps) => {
       .then((data) => (window.location.href = data.data));
   };
 
-  // const appearance: Appearance = {
-  //   theme: "stripe",
-  // };
-  // const options: StripeElementsOptions = {
-  //   clientSecret,
-  //   appearance,
-  // };
-
   return (
     <main className="flex flex-1 flex-col">
       <div className="grid md:grid-cols-3 gap-4">
-        <Card className="col-span-2">
+        <Card className="md:col-span-2 overflow-hidden h-fit">
           <CardHeader>
             <CardTitle>Card</CardTitle>
             <CardDescription>
@@ -155,11 +138,11 @@ export const CardWrapper = ({ cards: listCards }: CardWrapperProps) => {
             </CardDescription>
           </CardHeader>
 
-          <CardContent>
+          <CardContent className="overflow-auto">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="hidden sm:table-cell">
+                  <TableHead>
                     <Checkbox
                       checked={isChoseAll}
                       onCheckedChange={(isCheck: boolean) => {
@@ -175,7 +158,7 @@ export const CardWrapper = ({ cards: listCards }: CardWrapperProps) => {
                   </TableHead>
                   <TableHead>Name</TableHead>
                   <TableHead>Quantity</TableHead>
-                  <TableHead className="hidden md:table-cell">Price</TableHead>
+                  <TableHead>Price</TableHead>
                   <TableHead className="hidden md:table-cell">
                     Created at
                   </TableHead>
@@ -183,7 +166,7 @@ export const CardWrapper = ({ cards: listCards }: CardWrapperProps) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {cards.map((card) => (
+                {curCards.map((card) => (
                   <TableRow key={card.id as unknown as Key}>
                     <TableCell>
                       <Checkbox
@@ -229,9 +212,7 @@ export const CardWrapper = ({ cards: listCards }: CardWrapperProps) => {
                         }}
                       />
                     </TableCell>
-                    <TableCell className="hidden md:table-cell">
-                      ${card.product.price}
-                    </TableCell>
+                    <TableCell>${card.product.price}</TableCell>
                     <TableCell className="hidden md:table-cell">
                       {formatDate(new Date(card.product.created_at))}
                     </TableCell>
@@ -261,13 +242,17 @@ export const CardWrapper = ({ cards: listCards }: CardWrapperProps) => {
           </CardContent>
 
           <CardFooter>
-            <div className="text-xs text-muted-foreground">
-              Showing <strong>1-10</strong> of <strong>32</strong> products
-            </div>
+            <CustomPagination
+              pageSize={pageSize}
+              setPageSize={setpageSize}
+              currentPage={currentPage}
+              setCurrentPage={setcurrentPage}
+              total={cards.length}
+            />
           </CardFooter>
         </Card>
 
-        <Card>
+        <Card className="h-fit">
           <CardHeader className="bg-muted/50">
             <CardTitle>Checkout</CardTitle>
             <CardDescription>Summary total of product</CardDescription>
@@ -324,12 +309,6 @@ export const CardWrapper = ({ cards: listCards }: CardWrapperProps) => {
             >
               Checkout
             </Button>
-
-            {/* {clientSecret && (
-                <Elements options={options} stripe={stripePromise}>
-                  <CheckoutForm />
-                </Elements>
-              )} */}
           </CardContent>
         </Card>
       </div>
