@@ -10,7 +10,7 @@ const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 export async function POST(request: Request) {
   const body = await request.text();
-  console.log("check1111111: ", body);
+  console.log("check webhook body: ", body);
   const signature = headers().get("Stripe-Signature") as string;
 
   let event: Stripe.Event;
@@ -18,6 +18,7 @@ export async function POST(request: Request) {
   try {
     event = stripe.webhooks.constructEvent(body, signature, webhookSecret!);
   } catch (error: any) {
+    console.log(`Webhook error: ${error.message}`);
     return new NextResponse(`Webhook error: ${error.message}`, {
       status: 400,
     });

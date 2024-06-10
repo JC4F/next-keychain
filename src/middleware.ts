@@ -21,7 +21,7 @@ function IntlMiddleware(req: NextRequest) {
 
 export default auth((req) => {
   const session = req.auth;
-  const response = NextResponse.next();
+  // const response = NextResponse.next();
   const pathName = req.nextUrl.pathname;
   const defaultLocale = req.headers.get("x-your-custom-locale") || "en";
 
@@ -35,7 +35,17 @@ export default auth((req) => {
 
   // no public, require authenticated
   if (!session?.user) {
-    return NextResponse.redirect(new URL(`/${defaultLocale}/product`, req.url));
+    return NextResponse.redirect(
+      new URL(`/${defaultLocale}/product`, req.url),
+      {
+        nextConfig: {
+          i18n: {
+            defaultLocale,
+            locales: locales as unknown as string[],
+          },
+        },
+      }
+    );
   }
 
   if (!roles.includes(session?.user?.role))
